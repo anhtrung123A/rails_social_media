@@ -1,0 +1,11 @@
+<%= turbo_stream.append "posts" do %>
+  <%= render partial: "posts/post", collection: @posts %>
+<% end %>
+
+<% if @posts.next_page %>
+  <%= turbo_stream.replace "pagination" do %>
+    <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "pagination" %>
+<% end %>

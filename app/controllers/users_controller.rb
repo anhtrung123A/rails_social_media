@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include SetCurrentUser
   before_action :authenticate_user!, only: [ :edit, :update ]
   before_action :set_user, only: [ :edit, :update ]
   def edit
@@ -19,13 +20,15 @@ class UsersController < ApplicationController
 
   def show
     @user = User.eager_load(:posts).find(params[:id])
+    @posts = @user.posts.page(params[:page]).per(5)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   private
-
-  def set_user
-    @user = current_user
-  end
 
   def user_params
     params.require(:user).permit(:username, :avatar, :remove_avatar)

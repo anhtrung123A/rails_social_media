@@ -116,7 +116,10 @@ GEM
     et-orbi (1.3.0)
       tzinfo
     ffi (1.17.2-x64-mingw-ucrt)
+<<<<<<< HEAD
     ffi (1.17.2-x86_64-linux-gnu)
+=======
+>>>>>>> eed8a92872888ab158b94e34da456e1103594de7
     fugit (1.11.2)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -198,8 +201,11 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.10-x64-mingw-ucrt)
       racc (~> 1.4)
+<<<<<<< HEAD
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
+=======
+>>>>>>> eed8a92872888ab158b94e34da456e1103594de7
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     parallel (1.27.0)
@@ -208,7 +214,10 @@ GEM
       racc
     pg (1.6.2)
     pg (1.6.2-x64-mingw-ucrt)
+<<<<<<< HEAD
     pg (1.6.2-x86_64-linux)
+=======
+>>>>>>> eed8a92872888ab158b94e34da456e1103594de7
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -342,7 +351,10 @@ GEM
     stringio (3.1.7)
     thor (1.4.0)
     thruster (0.1.15)
+<<<<<<< HEAD
     thruster (0.1.15-x86_64-linux)
+=======
+>>>>>>> eed8a92872888ab158b94e34da456e1103594de7
     timeout (0.4.3)
     turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
@@ -374,7 +386,10 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+<<<<<<< HEAD
   x86_64-linux
+=======
+>>>>>>> eed8a92872888ab158b94e34da456e1103594de7
 
 DEPENDENCIES
   bootsnap

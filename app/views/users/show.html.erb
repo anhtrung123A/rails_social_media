@@ -22,7 +22,38 @@
         <div class="mt-4 sm:mt-2">
             <%= link_to "Edit Profile", edit_profile_path(current_user), class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
         </div>
+    <% else %>
+        <div class="mt-4 sm:mt-2">
+          <%= render partial: "users/follow_button", locals: { user: @user } %>
+        </div>
     <% end %>
     </div>
   </div>
+
+  <!-- Post Feed with Turbo Frame + Infinite Scroll -->
+  <div id="posts-container" class="mt-8">
+    <%= turbo_frame_tag "posts" do %>
+      <% if @posts.present? %>
+        <%= render partial: "posts/post", collection: @posts %>
+      <% else %>
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+          <svg class="w-12 h-12 text-gray-400 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-2h4l2 2h4a2 2 0 012 2v12a2 2 0 01-2 2z" />
+          </svg>
+          <p class="text-gray-600 text-lg font-semibold">No posts yet</p>
+          <% if current_user == @user %>
+            <p class="text-gray-500 text-sm mt-1">Start sharing your thoughts!</p>
+            <%= link_to "Create your first post", new_post_path, class: "mt-4 inline-block px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow hover:bg-indigo-700 transition" %>
+          <% else %>
+            <p class="text-gray-500 text-sm mt-1"><%= @user.username %> hasn’t posted anything yet.</p>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if @posts.next_page %>
+      <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
+    <% end %>
+  </div>
+
 </div>

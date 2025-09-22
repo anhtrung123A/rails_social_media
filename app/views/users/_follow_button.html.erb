@@ -1,0 +1,7 @@
+<%= turbo_frame_tag dom_id(user, :follow_button) do %>
+  <% if current_user && user.followers.exists?(id: current_user.id) %>
+    <%= link_to "Unfollow", profile_follow_path(user), method: :delete, class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+  <% else %>
+      <%= link_to "Follow", profile_follow_path(user), method: :post, class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+  <% end %>
+<% end %>

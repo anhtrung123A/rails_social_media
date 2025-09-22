@@ -1,0 +1,40 @@
+<div class="max-w-2xl mx-auto mt-10 space-y-8">
+  <!-- Post Creation -->
+  <% if user_signed_in? %>
+    <div class="bg-white p-6 rounded-lg shadow-md space-y-4">
+    <div class="flex items-start space-x-4">
+        <%= avatar_for(current_user, class: "h-10 w-10 rounded-full object-cover") %>
+        <div class="flex-1">
+        <%= form_with(model: @post, url: posts_path, html: { multipart: true }) do |f| %>
+            <div>
+            <%= f.text_area :description, rows: 3, placeholder: "What's on your mind?", class: "w-full border border-gray-300 rounded-md shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
+            </div>
+
+            <div class="flex items-center justify-between mt-3">
+            <div class="flex items-center space-x-3">
+                <%= f.label :images, class: "text-sm text-gray-500" do %>
+                Add photos
+                <%= f.file_field :images, multiple: true, name: "post[images][]", class: "hidden" %>
+                <% end %>
+            </div>
+
+            <%= f.submit "Post", class: "inline-flex justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+            </div>
+        <% end %>
+        </div>
+    </div>
+    </div>
+  <% end %>
+
+  <!-- Post Feed with Turbo Frame + Infinite Scroll -->
+  <div id="posts-container">
+    <%= turbo_frame_tag "posts" do %>
+        <%= render partial: "posts/post", collection: @posts %>
+    <% end %>
+
+    <% if @posts.next_page %>
+        <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy if @posts.next_page %>
+    <% end %>
+  </div>
+
+</div>

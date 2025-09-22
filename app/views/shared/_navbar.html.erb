@@ -1,0 +1,26 @@
+<nav class="bg-white shadow">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="/" class="text-xl font-bold text-indigo-600">MyApp</a>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <% if user_signed_in? %>
+          <%= link_to avatar_for(current_user), profile_path(current_user) %>
+          <span class="text-gray-700">Welcome, <%= current_user.username || current_user.email %></span>
+          <%= link_to "Logout", destroy_user_session_path,
+                    method: :delete,
+                    data: { turbo: false, confirm: "Are you sure you want to log out?" },
+                    class: "text-sm text-gray-700 hover:text-indigo-600" %>        
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "text-sm text-gray-700 hover:text-indigo-600" %>
+          <%= link_to "Sign Up", new_user_registration_path, class: "text-sm text-indigo-600 hover:text-indigo-800 font-semibold" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

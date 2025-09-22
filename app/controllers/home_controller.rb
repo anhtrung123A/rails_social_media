@@ -8,5 +8,4 @@ class HomeController < ApplicationController
       format.turbo_stream
     end
   end
-
 end

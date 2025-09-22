@@ -15,7 +15,7 @@ class LikesController < ApplicationController
     interact
   end
 
-  private 
+  private
 
   def interact
     respond_to do |format|

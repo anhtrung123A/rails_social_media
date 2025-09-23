@@ -1,8 +1,5 @@
-<%= turbo_frame_tag dom_id(post, :comment_button) do %>
-  <%= button_to post_like_path(post),
-                method: :post,
-                class: "flex items-center space-x-1 text-gray-600 hover:text-indigo-600 transition",
-                form: { data: { turbo_method: :post } } do %>
+<%= link_to post_comments_path(post), data: { turbo: false },
+                class: "flex items-center space-x-1 text-gray-600 hover:text-indigo-600 transition" do %>
     <svg class="w-[24px] h-[24px]" 
          fill="none" 
          stroke="currentColor" 
@@ -18,5 +15,4 @@
         <path stroke-width="1.6" d="M14 19C12.7635 19 11.4022 19.4992 10.1586 20.145C8.16119 21.1821 7.16249 21.7007 6.67035 21.3703C6.1782 21.0398 6.27135 20.0151 6.45766 17.9657L6.5 17.5" stroke-linecap="round" />
       </g>
     </svg>
-  <% end %>
 <% end %>

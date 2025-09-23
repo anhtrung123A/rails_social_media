@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   end
   resources :posts do
     resource :like, only: [ :create, :destroy ]
+    resource :comments, only: [ :show, :create, :destroy ]
   end
   devise_for :users
   root "home#index"

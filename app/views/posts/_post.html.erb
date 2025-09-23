@@ -3,7 +3,7 @@
   <div class="flex items-center space-x-3 mb-2">
     <%= avatar_for(post.author, class: "h-8 w-8 rounded-full") %>
     <div>
-      <p class="text-sm font-semibold"><%= post.author.username || post.author.email %></p>
+      <p class="text-sm font-semibold"><%= post.author.full_name || post.author.username %></p>
       <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
     </div>
   </div>
@@ -30,7 +30,7 @@
     <div class="flex gap-1 items-center">
         <%= render partial: "posts/comment_button", locals: { post: post } %>
         <div id="<%= dom_id(post, :comment_count) %>" class="text-sm text-gray-600">
-            0
+            <%= post.comments.count %>
         </div>
     </div>
 

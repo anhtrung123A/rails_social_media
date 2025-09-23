@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params.except(:remove_avatar))
-      redirect_to @user, notice: "Profile updated successfully."
+      redirect_to profile_url(@user), notice: "Profile updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.eager_load(:posts).find(params[:id])
-    @posts = @user.posts.page(params[:page]).per(5)
+    @posts = @user.posts.order(created_at: :desc).page(params[:page]).per(5)
 
     respond_to do |format|
       format.html

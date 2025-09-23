@@ -27,6 +27,9 @@
           <%= render partial: "users/follow_button", locals: { user: @user } %>
         </div>
     <% end %>
+      <div class="mt-4 sm:mt-2">
+        <%= render partial: "users/followers_followings_count", locals: { user: @user } %>
+      </div>
     </div>
   </div>
 
@@ -52,7 +55,7 @@
     <% end %>
 
     <% if @posts.next_page %>
-      <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
+      <%= turbo_frame_tag "pagination", src: profile_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
     <% end %>
   </div>
 

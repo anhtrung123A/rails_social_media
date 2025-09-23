@@ -19,7 +19,7 @@ class FollowsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          # turbo_stream.replace(dom_id(@post, :like_count), partial: "posts/like_count", locals: { post: @post }),
+          turbo_stream.replace(dom_id(@user, :followers_followings_count), partial: "users/followers_followings_count", locals: { user: @user }),
           turbo_stream.replace(dom_id(@user, :follow_button), partial: "users/follow_button", locals: { user: @user })
         ]
       end

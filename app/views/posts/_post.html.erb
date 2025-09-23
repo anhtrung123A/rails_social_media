@@ -1,7 +1,9 @@
 <div class="bg-white p-4 rounded shadow my-4">
   <% raise "Post is nil!" if post.nil? %>
   <div class="flex items-center space-x-3 mb-2">
-    <%= avatar_for(post.author, class: "h-8 w-8 rounded-full") %>
+    <%= link_to profile_path(post.author), data: { turbo: false } do %>
+      <%= avatar_for(post.author, class: "h-8 w-8 rounded-full") %>
+    <% end %>
     <div>
       <p class="text-sm font-semibold"><%= post.author.full_name || post.author.username %></p>
       <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>

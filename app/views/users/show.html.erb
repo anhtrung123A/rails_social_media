@@ -23,8 +23,15 @@
       <p class="text-[14px] text-gray-500">
         <%= @user.bio %>
       </p>
-      <%= render partial: "users/followers_count", locals: { user: @user } %>
-
+      <!-- Followers Count Button -->
+      <button 
+        data-controller="followers-modal" 
+        data-action="click->followers-modal#open" 
+        data-followers-modal-url="<%= profile_follow_path(@user, format: :turbo_stream) %>"
+        class="mt-[-10px]"
+      >
+        <%= render partial: "users/followers_count", locals: { user: @user } %>
+      </button>
       <!-- Action Button -->
       <div class="pt-2">
         <% if current_user == @user %>

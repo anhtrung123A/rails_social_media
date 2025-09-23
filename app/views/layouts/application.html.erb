@@ -26,7 +26,8 @@
   <body>
     <% unless devise_controller? %>
       <%= render "shared/navbar" %>
-    <% end %>    
+    <% end %>
+    <turbo-frame id="followers_modal"></turbo-frame>    
     <%= yield %>
   </body>
 </html>

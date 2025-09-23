@@ -1,6 +1,12 @@
 class FollowsController < ApplicationController
   include ActionView::RecordIdentifier
   before_action :authenticate_user!
+
+  def show
+    @user = User.find(params[:profile_id])
+    @followers = @user.followers
+    render partial: "users/followers_modal", formats: [ :turbo_stream ]
+  end
   def create
     @user = User.find(params[:profile_id])
     Follow.new(user_id: @user.id, follower_id: current_user.id).save!

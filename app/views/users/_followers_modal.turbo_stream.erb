@@ -1,0 +1,30 @@
+<div id="followers_modal_" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+  <div class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
+    <!-- Close Button -->
+    <button 
+      data-controller="followers-modal" 
+      data-action="click->followers-modal#close" 
+      class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+    >
+      ✕
+    </button>
+
+    <h2 class="text-lg font-semibold mb-4">Followers</h2>
+
+    <div class="space-y-3 max-h-80 overflow-y-auto">
+      <% if @followers.any? %>
+        <% @followers.each do |follower| %>
+          <div class="flex items-center gap-3">
+            <%= avatar_for(follower, class: "h-10 w-10 rounded-full") %>
+            <div>
+              <p class="text-sm font-medium"><%= follower.full_name || follower.username %></p>
+              <p class="text-xs text-gray-500">@<%= follower.username %></p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-gray-500 text-sm">No followers yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

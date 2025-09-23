@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :follows, only: [ :create, :destroy ]
   resources :profiles, controller: "users", only: [ :show, :edit, :update ] do
-    resource :follow, only: [ :create, :destroy ]
+    resource :follow, only: [ :create, :destroy, :show ]
   end
   resources :posts do
     resource :like, only: [ :create, :destroy ]

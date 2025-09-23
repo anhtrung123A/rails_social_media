@@ -1,62 +1,67 @@
-<div class="max-w-4xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
-  <div class="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-8">
+<div class="max-w-2xl mx-auto mt-6 px-4 sm:px-6 lg:px-8">
+
+  <!-- Profile Header -->
+  <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-8 pb-6 border-b border-gray-100">
     <!-- Avatar -->
     <div class="flex-shrink-0">
-      <%= avatar_for(@user, class: "h-32 w-32 rounded-full object-cover border-4 border-white shadow") %>
+      <%= avatar_for(@user, class: "h-28 w-28 sm:h-32 sm:w-32 rounded-full object-cover border-4 border-white shadow-sm") %>
     </div>
 
     <!-- User Info -->
-    <div class="mt-4 sm:mt-0 text-center sm:text-left">
-      <h1 class="text-3xl font-bold text-gray-900">
-        <%= @user.username %>
+    <div class="text-center sm:text-left space-y-3 flex-1">
+      <!-- Full Name -->
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+        <%= @user.full_name || @user.username %>
       </h1>
 
-      <p class="text-sm text-gray-600 mt-1">
-        <%= @user.email %>
+      <!-- Username -->
+      <p class="text-[12px] text-gray-600 font-mono">
+        @<%= @user.username %>
       </p>
 
-      <p class="text-sm text-gray-500 mt-1">
-        Joined on <%= @user.created_at.strftime("%B %d, %Y") %>
+      <!-- Bio -->
+      <p class="text-[14px] text-gray-500">
+        <%= @user.bio %>
       </p>
-    <% if current_user == @user %>
-        <div class="mt-4 sm:mt-2">
-            <%= link_to "Edit Profile", edit_profile_path(current_user), class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
-        </div>
-    <% else %>
-        <div class="mt-4 sm:mt-2">
+      <%= render partial: "users/followers_count", locals: { user: @user } %>
+
+      <!-- Action Button -->
+      <div class="pt-2">
+        <% if current_user == @user %>
+          <%= link_to "Edit Profile", edit_profile_path, class: "inline-block px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[12px] font-semibold rounded-full hover:bg-gray-800 transition shadow-sm leading-none" %>
+        <% else %>
           <%= render partial: "users/follow_button", locals: { user: @user } %>
-        </div>
-    <% end %>
-      <div class="mt-4 sm:mt-2">
-        <%= render partial: "users/followers_followings_count", locals: { user: @user } %>
+        <% end %>
       </div>
+
+      <!-- Followers / Following -->
     </div>
   </div>
 
-  <!-- Post Feed with Turbo Frame + Infinite Scroll -->
-  <div id="posts-container" class="mt-8">
+  <!-- Posts Feed -->
+  <div id="posts-container" class="space-y-8">
     <%= turbo_frame_tag "posts" do %>
-      <% if @posts.present? %>
-        <%= render partial: "posts/post", collection: @posts %>
+      <% if @posts.any? %>
+        <%= render partial: "posts/post", collection: @posts, locals: { profile_view: true } %>
       <% else %>
-        <div class="flex flex-col items-center justify-center py-16 text-center">
-          <svg class="w-12 h-12 text-gray-400 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-2h4l2 2h4a2 2 0 012 2v12a2 2 0 01-2 2z" />
+        <div class="flex flex-col items-center justify-center py-20 text-center">
+          <svg class="w-16 h-16 text-gray-300 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.5-4.5L4 7m0 0l4.5 4.5M4 7h16m-8 8v4m0 0l-2-2m2 2l2-2" />
           </svg>
-          <p class="text-gray-600 text-lg font-semibold">No posts yet</p>
+          <p class="text-gray-600 text-xl font-semibold">No posts yet</p>
           <% if current_user == @user %>
-            <p class="text-gray-500 text-sm mt-1">Start sharing your thoughts!</p>
-            <%= link_to "Create your first post", new_post_path, class: "mt-4 inline-block px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow hover:bg-indigo-700 transition" %>
+            <p class="text-gray-500 text-sm mt-2">Share your first thought with the world.</p>
+            <%= link_to "Create your first post", new_post_path, class: "mt-5 inline-flex items-center px-5 py-3 bg-black text-white text-sm font-semibold rounded-full hover:bg-gray-800 transition shadow-md" %>
           <% else %>
-            <p class="text-gray-500 text-sm mt-1"><%= @user.username %> hasn’t posted anything yet.</p>
+            <p class="text-gray-500 text-sm mt-2"><%= @user.username %> hasn’t posted anything yet.</p>
           <% end %>
         </div>
       <% end %>
     <% end %>
 
+    <!-- Infinite Scroll Pagination -->
     <% if @posts.next_page %>
-      <%= turbo_frame_tag "pagination", src: profile_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
+      <%= turbo_frame_tag "pagination", src: root_path(@user, page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
     <% end %>
   </div>
-
 </div>

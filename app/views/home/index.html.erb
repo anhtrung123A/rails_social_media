@@ -1,40 +1,54 @@
-<div class="max-w-2xl mx-auto mt-10 space-y-8">
+<div class="max-w-2xl mx-auto mt-6 space-y-8">
+
   <!-- Post Creation -->
   <% if user_signed_in? %>
-    <div class="bg-white p-6 rounded-lg shadow-md space-y-4">
-    <div class="flex items-start space-x-4">
-        <%= avatar_for(current_user, class: "h-10 w-10 rounded-full object-cover") %>
-        <div class="flex-1">
-        <%= form_with(model: @post, url: posts_path, html: { multipart: true }) do |f| %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+      <%= form_with(model: @post, url: posts_path, html: { multipart: true, class: "flex items-start space-x-4" }) do |f| %>
+        <!-- Avatar -->
+        <%= avatar_for(current_user, class: "h-12 w-12 rounded-full object-cover ring-2 ring-white flex-shrink-0") %>
+
+        <!-- Post Content Area -->
+        <div class="flex-1 space-y-4">
+          <!-- Text Area -->
+          <div>
+            <%= f.text_area :description,
+                            rows: 3,
+                            placeholder: "What’s on your mind?",
+                            class: "block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none transition resize-none" %>
+          </div>
+
+          <!-- Footer: Upload + Button -->
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100">
             <div>
-            <%= f.text_area :description, rows: 3, placeholder: "What's on your mind?", class: "w-full border border-gray-300 rounded-md shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-            </div>
-
-            <div class="flex items-center justify-between mt-3">
-            <div class="flex items-center space-x-3">
-                <%= f.label :images, class: "text-sm text-gray-500" do %>
-                Add photos
+              <%= f.label :images, class: "font-medium text-gray-700 cursor-pointer flex items-center space-x-2 group" do %>
+                <svg class="w-[24px] h-[24px] text-gray-500 group-hover:text-indigo-600 transition"
+                     fill="currentColor"
+                     viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 10.25C12.4142 10.25 12.75 10.5858 12.75 11V12.25H14C14.4142 12.25 14.75 12.5858 14.75 13C14.75 13.4142 14.4142 13.75 14 13.75H12.75V15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V13.75H10C9.58579 13.75 9.25 13.4142 9.25 13C9.25 12.5858 9.58579 12.25 10 12.25H11.25V11C11.25 10.5858 11.5858 10.25 12 10.25Z" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.77778 21H14.2222C17.3433 21 18.9038 21 20.0248 20.2646C20.51 19.9462 20.9267 19.5371 21.251 19.0607C22 17.9601 22 16.4279 22 13.3636C22 10.2994 22 8.76721 21.251 7.6666C20.9267 7.19014 20.51 6.78104 20.0248 6.46268C19.3044 5.99013 18.4027 5.82123 17.022 5.76086C16.3631 5.76086 15.7959 5.27068 15.6667 4.63636C15.4728 3.68489 14.6219 3 13.6337 3H10.3663C9.37805 3 8.52715 3.68489 8.33333 4.63636C8.20412 5.27068 7.63685 5.76086 6.978 5.76086C5.59733 5.82123 4.69555 5.99013 3.97524 6.46268C3.48995 6.78104 3.07328 7.19014 2.74902 7.6666C2 8.76721 2 10.2994 2 13.3636C2 16.4279 2 17.9601 2.74902 19.0607C3.07328 19.5371 3.48995 19.9462 3.97524 20.2646C5.09624 21 6.65675 21 9.77778 21ZM16 13C16 15.2091 14.2091 17 12 17C9.79086 17 8 15.2091 8 13C8 10.7909 9.79086 9 12 9C14.2091 9 16 10.7909 16 13ZM18 9.25C17.5858 9.25 17.25 9.58579 17.25 10C17.25 10.4142 17.5858 10.75 18 10.75H19C19.4142 10.75 19.75 10.4142 19.75 10C19.75 9.58579 19.4142 9.25 19 9.25H18Z" />
+                </svg>
+                <span class="text-[14px]">Add photos</span>
                 <%= f.file_field :images, multiple: true, name: "post[images][]", class: "hidden" %>
-                <% end %>
+              <% end %>
             </div>
 
-            <%= f.submit "Post", class: "inline-flex justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
-            </div>
-        <% end %>
+            <%= f.submit "Post",
+                         class: "inline-block px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[12px] font-semibold rounded-full hover:from-indigo-700 hover:to-purple-700 transition shadow-sm leading-none" %>
+          </div>
         </div>
-    </div>
+      <% end %>
     </div>
   <% end %>
 
-  <!-- Post Feed with Turbo Frame + Infinite Scroll -->
-  <div id="posts-container">
+  <!-- Post Feed -->
+  <div id="posts-container" class="space-y-6">
     <%= turbo_frame_tag "posts" do %>
-        <%= render partial: "posts/post", collection: @posts %>
+      <%= render partial: "posts/post", collection: @posts %>
     <% end %>
 
     <% if @posts.next_page %>
-        <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy if @posts.next_page %>
+      <%= turbo_frame_tag "pagination", src: root_path(page: @posts.next_page, format: :turbo_stream), loading: :lazy %>
     <% end %>
   </div>
-
 </div>

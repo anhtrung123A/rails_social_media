@@ -1,0 +1,7 @@
+<div id="<%= dom_id(user, :followers_count) %>"
+     class="flex justify-center sm:justify-start space-x-6 text-sm font-medium">
+  <%= link_to root_path,
+              class: "text-xs text-gray-500" do %>
+    <span><%= pluralize(user.followers.count, "Follower") %></span>
+  <% end %>
+</div>

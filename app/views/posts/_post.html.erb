@@ -27,14 +27,20 @@
         </div>
     </div>
     <!-- Comment -->
-    <button class="flex items-center space-x-1 hover:text-indigo-600 transition">
-        <span>Comment</span>
-    </button>
+    <div class="flex gap-1 items-center">
+        <%= render partial: "posts/comment_button", locals: { post: post } %>
+        <div id="<%= dom_id(post, :comment_count) %>" class="text-sm text-gray-600">
+            0
+        </div>
+    </div>
 
     <!-- Share -->
-    <button class="flex items-center space-x-1 hover:text-indigo-600 transition">
-        <span>Share</span>
-    </button>
+    <div class="flex gap-1 items-center">
+        <%= render partial: "posts/share_button", locals: { post: post } %>
+        <div id="<%= dom_id(post, :share_count) %>" class="text-sm text-gray-600">
+            0
+        </div>
+    </div>
   </div>
 
 </div>

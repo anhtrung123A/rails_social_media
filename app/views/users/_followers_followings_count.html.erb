@@ -1,4 +1,0 @@
-<div id="<%= dom_id(user, :followers_followings_count) %>">
-  <%= link_to pluralize(user.followers.count, "Follower"), root_path, class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium"%>
-  <%= link_to pluralize(user.followings.count, "Following"), root_path, class: "inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium"%>
-</div>

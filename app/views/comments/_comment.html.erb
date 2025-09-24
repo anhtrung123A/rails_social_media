@@ -1,7 +1,9 @@
 <div id="<%= dom_id(comment) %>" class="group flex space-x-3 p-4 border-b border-gray-100 last:border-b-0 relative">
   <!-- Avatar -->
   <div class="flex-shrink-0">
-    <%= avatar_for(comment.user, class: "h-8 w-8 rounded-full ring-2 ring-white") %>
+    <%= link_to profile_path(comment.user), data: { turbo: false } do %>
+      <%= avatar_for(comment.user, class: "h-8 w-8 rounded-full") %>
+    <% end %>
   </div>
 
   <!-- Content -->

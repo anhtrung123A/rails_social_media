@@ -20,8 +20,26 @@ class UsersController < ApplicationController
 
   def show
     @user = User.eager_load(:posts).find(params[:id])
-    @posts = @user.posts.order(created_at: :desc).page(params[:page]).per(5)
-
+    # Get the Arel tables
+    posts_table = Post.arel_table
+    shares_table = Share.arel_table
+    
+    # Build the queries
+    shared_posts_query = Post.joins(:shares)
+                            .where(shares: { user_id: @user.id })
+                            .select('posts.id, posts.description, posts.author_id, shares.created_at, posts.updated_at')
+                            .arel
+                            
+    authored_posts_query = Post.where(author_id: @user.id).arel
+    
+    # Execute the union
+    union_query = shared_posts_query.union(authored_posts_query)
+    
+    # Create a new relation from the union query
+    @posts = Post.from(union_query.as(Post.table_name))
+                .order(created_at: :desc)
+                .page(params[:page])
+                .per(5)
     respond_to do |format|
       format.html
       format.turbo_stream

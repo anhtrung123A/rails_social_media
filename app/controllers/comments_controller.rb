@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [ :create, :destroy ]
 
   def show
     @post = Post.eager_load(:comments).find(params[:post_id])

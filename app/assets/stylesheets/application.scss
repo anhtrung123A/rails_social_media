@@ -1,0 +1,70 @@
+// app/assets/stylesheets/conversations.scss
+.messages-container {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.message-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  max-width: 70%;
+  
+  &.sent {
+    background-color: #dcf8c6;
+    margin-left: auto;
+    text-align: right;
+  }
+  
+  &.received {
+    background-color: white;
+    border: 1px solid #ddd;
+  }
+  
+  .message-content {
+    p {
+      margin: 5px 0;
+      color: #333;
+    }
+    
+    .timestamp {
+      font-size: 0.7em;
+      color: #666;
+    }
+  }
+}
+
+.conversations-list {
+  margin-bottom: 20px;
+  
+  .conversation-item {
+    border: 1px solid #eee;
+    margin-bottom: 5px;
+    padding: 10px;
+    
+    .conversation-link {
+      display: flex;
+      justify-content: space-between;
+      text-decoration: none;
+      color: #333;
+      
+      &.unread {
+        background-color: #e3f2fd;
+        border-left: 3px solid #2196f3;
+      }
+    }
+  }
+}
+
+.message-form {
+  display: flex;
+  gap: 10px;
+  
+  input[type="text"] {
+    flex: 1;
+  }
+}

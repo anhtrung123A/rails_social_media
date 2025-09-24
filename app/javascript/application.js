@@ -4,3 +4,4 @@ import "controllers"
 import "@rails/ujs"
 
 Rails.start()
+import "channels"

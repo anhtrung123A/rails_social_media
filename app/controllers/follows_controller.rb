@@ -1,6 +1,6 @@
 class FollowsController < ApplicationController
   include ActionView::RecordIdentifier
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:create, :destroy]
 
   def show
     @user = User.find(params[:profile_id])

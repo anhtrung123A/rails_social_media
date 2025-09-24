@@ -21,8 +21,8 @@ class MessagesChannel < ApplicationCable::Channel
   end
 
   def speak(data)
-    conversation = Conversation.find(data['conversation_id'])
-    
+    conversation = Conversation.find(data["conversation_id"])
+
     # Verify user has access to this conversation
     unless conversation.sender == current_user || conversation.recipient == current_user
       return
@@ -31,22 +31,22 @@ class MessagesChannel < ApplicationCable::Channel
     message = conversation.messages.build(
       sender: current_user,
       recipient: conversation.other_user(current_user),
-      content: data['message']
+      content: data["message"]
     )
-    
+
     if message.save
       # Broadcast to conversation channel
-      ActionCable.server.broadcast "messages_#{conversation.id}", 
+      ActionCable.server.broadcast "messages_#{conversation.id}",
         message: message.content,
         sender: message.sender.full_name,
         conversation_id: conversation.id,
-        created_at: message.created_at.strftime('%H:%M'),
+        created_at: message.created_at.strftime("%H:%M"),
         id: message.id
-        
+
       # Also broadcast to recipient's personal channel for notification
       recipient = conversation.other_user(current_user)
-      ActionCable.server.broadcast "user_#{recipient.id}_messages", 
-        type: 'new_message',
+      ActionCable.server.broadcast "user_#{recipient.id}_messages",
+        type: "new_message",
         conversation_id: conversation.id,
         sender_name: current_user.full_name,
         message_preview: message.content.truncate(50)

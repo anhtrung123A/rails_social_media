@@ -16,17 +16,17 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :posts, foreign_key: :author_id
   validates :username, presence: true, uniqueness: { case_sensitive: false }
-  
-  has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id', dependent: :destroy
-  has_many :received_messages, class_name: 'Message', foreign_key: 'recipient_id', dependent: :destroy
-  
-  has_many :conversations_as_sender, class_name: 'Conversation', foreign_key: 'sender_id'
-  has_many :conversations_as_recipient, class_name: 'Conversation', foreign_key: 'recipient_id'
-  
+
+  has_many :sent_messages, class_name: "Message", foreign_key: "sender_id", dependent: :destroy
+  has_many :received_messages, class_name: "Message", foreign_key: "recipient_id", dependent: :destroy
+
+  has_many :conversations_as_sender, class_name: "Conversation", foreign_key: "sender_id"
+  has_many :conversations_as_recipient, class_name: "Conversation", foreign_key: "recipient_id"
+
   def conversations
     Conversation.where("sender_id = ? OR recipient_id = ?", id, id)
   end
-  
+
   def unread_messages_count
     received_messages.where(read: nil).count
   end

@@ -8,8 +8,8 @@ Rails.application.routes.draw do
     resource :comments, only: [ :show, :create, :destroy ]
     resource :share, only: [ :create, :destroy ]
   end
-  resources :conversations, only: [:index, :show, :create] do
-    resources :messages, only: [:create]
+  resources :conversations, only: [ :index, :show, :create ] do
+    resources :messages, only: [ :create ]
   end
   devise_for :users
   root "home#index"

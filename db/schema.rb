@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_032306) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_065941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -95,6 +95,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_032306) do
     t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "subject_id", null: false
+    t.string "action", null: false
+    t.bigint "direct_object_id", null: false
+    t.bigint "indirect_object_id", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["direct_object_id"], name: "index_notifications_on_direct_object_id"
+    t.index ["indirect_object_id"], name: "index_notifications_on_indirect_object_id"
+    t.index ["subject_id", "direct_object_id", "indirect_object_id"], name: "idx_on_subject_id_direct_object_id_indirect_object__159d644ce1", unique: true
+    t.index ["subject_id"], name: "index_notifications_on_subject_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "description"
     t.bigint "author_id", null: false
@@ -147,6 +161,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_032306) do
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "notifications", "posts", column: "indirect_object_id"
+  add_foreign_key "notifications", "users", column: "direct_object_id"
+  add_foreign_key "notifications", "users", column: "subject_id"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "shares", "posts"
   add_foreign_key "shares", "users"

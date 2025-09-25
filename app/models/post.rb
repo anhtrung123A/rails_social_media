@@ -3,6 +3,7 @@ class Post < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_user, through: :likes, source: :user
   has_many :comments, dependent: :destroy
+  has_many :notifications
   has_many :shares, dependent: :destroy
   has_many_attached :images
   validates :description, presence: true

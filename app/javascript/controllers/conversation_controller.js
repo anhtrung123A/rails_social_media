@@ -133,7 +133,6 @@ export default class extends Controller {
 
     // Clear the input field immediately
     this.messageInputTarget.value = ""
-    
     // Re-enable send button after a short delay to ensure message is sent
     setTimeout(() => {
       this.sendButtonTarget.disabled = false

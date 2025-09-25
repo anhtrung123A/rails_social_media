@@ -36,7 +36,7 @@
       <% if @comments.any? %>
         <%= render partial: "comment", collection: @comments, as: :comment %>
       <% else %>
-        <p class="text-gray-500 text-center py-8">No comments yet. Be the first to comment!</p>
+        <p id="no-comment-display" class="text-gray-500 text-center py-8">No comments yet. Be the first to comment!</p>
       <% end %>
     </div>
   </div>

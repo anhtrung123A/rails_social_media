@@ -1,10 +1,12 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
   include ActionView::RecordIdentifier
+  include CreateAndSendNotification
 
   def create
     @post = Post.find(params[:post_id])
     @post.likes.find_or_create_by(user: current_user)
+    create_and_send_notification_to(current_user, @post.author, @post, "like")
     interact
   end
 

@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :conversations_as_sender, class_name: "Conversation", foreign_key: "sender_id"
   has_many :conversations_as_recipient, class_name: "Conversation", foreign_key: "recipient_id"
 
+  has_many :notifications
   def conversations
     Conversation.where("sender_id = ? OR recipient_id = ?", id, id)
   end

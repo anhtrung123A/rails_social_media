@@ -10,12 +10,25 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
-    @comment.save!
+    if @comment.save
+      respond_to do |format|
+        format.turbo_stream
+        format.html
+      end
+    else
+      # Handle errors (optional for now)
+      redirect_to post_path(@post), alert: "Comment could not be saved."
+    end
   end
 
   def destroy
-    puts params[:id]
-    puts @comment = Post.find(params[:post_id]).comments
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+    @comment.destroy
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to @post }
+    end
   end
 
   private

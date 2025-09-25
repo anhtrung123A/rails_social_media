@@ -1,0 +1,2 @@
+<% Rails.logger.debug "Deleting comment for user: #{@comment.user&.full_name}" %>
+<%= turbo_stream.remove dom_id(@comment) %>

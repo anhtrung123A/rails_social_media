@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend dom_id(@post, :comments), partial: "comments/comment", locals: { comment: @comment } %>
+<%= turbo_stream.update dom_id(@post, :form), partial: "comments/form" %>

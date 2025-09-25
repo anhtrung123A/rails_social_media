@@ -1,0 +1,7 @@
+{
+  "name": "Rails Social App",
+  "short_name": "Social",
+  "start_url": "/",
+  "display": "standalone",
+  "gcm_sender_id": "1039538005127"
+}

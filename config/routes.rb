@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   end
   resources :posts do
     resource :like, only: [ :create, :destroy ]
-    resource :comments, only: [ :show, :create, :destroy ]
+    resources :comments, only: [ :create, :destroy ]
+    resource :comments, only: [ :show ]
     resource :share, only: [ :create, :destroy ]
   end
   resources :conversations, only: [ :index, :show, :create ] do

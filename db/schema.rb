@@ -105,7 +105,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_065941) do
     t.datetime "updated_at", null: false
     t.index ["direct_object_id"], name: "index_notifications_on_direct_object_id"
     t.index ["indirect_object_id"], name: "index_notifications_on_indirect_object_id"
-    t.index ["subject_id", "direct_object_id", "indirect_object_id"], name: "idx_on_subject_id_direct_object_id_indirect_object__159d644ce1", unique: true
+    t.index ["subject_id", "direct_object_id", "indirect_object_id", "action"], name: "idx_on_subject_id_direct_object_id_indirect_object__4399abbf67", unique: true
     t.index ["subject_id"], name: "index_notifications_on_subject_id"
   end
 

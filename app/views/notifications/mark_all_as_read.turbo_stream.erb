@@ -1,0 +1,94 @@
+<!-- app/views/notifications/mark_as_read.turbo_stream.erb -->
+<% if params[:id] %>
+  <!-- Update single notification -->
+  <%= turbo_stream.update "notification_#{@notification.id}" do %>
+    <div class="p-3 rounded-lg bg-gray-50 flex items-start space-x-3" 
+         id="notification_<%= @notification.id %>">
+      <%= avatar_for(@notification.subject, class: "h-10 w-10 rounded-full flex-shrink-0") %>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-medium text-gray-900">
+            <%= @notification.message %>
+          </p>
+          <span class="text-xs text-gray-500 whitespace-nowrap">
+            <%= time_ago_in_words(@notification.created_at) %> ago
+          </span>
+        </div>
+        <% if @notification.indirect_object.present? %>
+          <div class="mt-2 bg-gray-50 p-2 rounded-lg">
+            <p class="text-xs text-gray-600 truncate">
+              <%= truncate(@notification.indirect_object.content, length: 100) %>
+            </p>
+          </div>
+        <% end %>
+        <div class="mt-2 flex space-x-2">
+          <%= link_to "View", notification_path(@notification), 
+                      class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+          <span class="text-xs text-gray-500">Read</span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Update notification badge -->
+  <%= turbo_stream.update "notification_badge" do %>
+    <% if @unread_count > 0 %>
+      <span id="notification_badge" class="absolute right-0 block h-5 w-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 ring-2 ring-white text-white text-xs flex items-center justify-center font-bold">
+        <%= @unread_count %>
+      </span>
+    <% else %>
+      <!-- Empty badge when no unread notifications -->
+      <span id="notification_badge" class="hidden"></span>
+    <% end %>
+  <% end %>
+
+  <!-- Update the unread count display in the header if needed -->
+  <%= turbo_stream.update "unread_count_display" do %>
+    <span id="unread_count_display"><%= @unread_count %></span>
+  <% end %>
+
+<% else %>
+  <!-- Mark all as read - update all notifications -->
+  <% current_user.unread_notifications.each do |notification| %>
+    <%= turbo_stream.update "notification_#{notification.id}" do %>
+      <div class="p-3 rounded-lg bg-gray-50 flex items-start space-x-3" 
+           id="notification_<%= notification.id %>">
+        <%= avatar_for(notification.subject, class: "h-10 w-10 rounded-full flex-shrink-0") %>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-900">
+              <%= notification.message %>
+            </p>
+            <span class="text-xs text-gray-500 whitespace-nowrap">
+              <%= time_ago_in_words(notification.created_at) %> ago
+            </span>
+          </div>
+          <% if notification.indirect_object.present? %>
+            <div class="mt-2 bg-gray-50 p-2 rounded-lg">
+              <p class="text-xs text-gray-600 truncate">
+                <%= truncate(notification.indirect_object.content, length: 100) %>
+              </p>
+            </div>
+          <% end %>
+          <div class="mt-2 flex space-x-2">
+            <%= link_to "View", notification_path(notification), 
+                        class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+            <span class="text-xs text-gray-500">Read</span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <!-- Update notification badge -->
+  <%= turbo_stream.update "notification_badge" do %>
+    <!-- Empty badge when no unread notifications -->
+    <span id="notification_badge" class="hidden"></span>
+  <% end %>
+
+  <!-- Update the unread count display -->
+  <%= turbo_stream.update "unread_count_display" do %>
+    <span id="unread_count_display">0</span>
+  <% end %>
+
+<% end %>

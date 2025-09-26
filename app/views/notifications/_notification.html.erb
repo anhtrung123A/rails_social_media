@@ -1,0 +1,45 @@
+<!-- app/views/notifications/_notification.html.erb -->
+<div class="p-3 rounded-lg <%= notification.read? ? 'bg-gray-50' : 'bg-blue-50 border-l-4 border-blue-400' %> 
+     flex items-start space-x-3" 
+     id="notification_<%= notification.id %>">
+  
+  <!-- User Avatar -->
+  <%= avatar_for(notification.subject, class: "h-10 w-10 rounded-full flex-shrink-0") %>
+  
+  <!-- Notification Content -->
+  <div class="flex-1 min-w-0">
+    <div class="flex items-center justify-between">
+      <p class="text-sm font-medium <%= notification.read? ? 'text-gray-900' : 'text-blue-800' %>">
+        <%= notification.message %>
+      </p>
+      <span class="text-xs text-gray-500 whitespace-nowrap">
+        <%= time_ago_in_words(notification.created_at) %> ago
+      </span>
+    </div>
+    
+    <!-- Post Preview if available -->
+    <% if notification.indirect_object.present? %>
+      <div class="bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-600 truncate">
+          <%= truncate(notification.indirect_object.description, length: 100) %>
+        </p>
+      </div>
+    <% end %>
+    
+    <!-- Action Buttons -->
+    <div class="mt-2 flex space-x-2 items-center">
+      <%= link_to "View", post_path(notification.indirect_object),
+                  class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+      
+      <% unless notification.read? %>
+        <%= button_to "Mark as read", 
+                      mark_all_as_read_notifications_path, 
+                      method: :post,
+                      class: "text-sm text-gray-600 hover:text-gray-800",
+                      form: { data: { turbo_method: :post } } %>
+      <% else %>
+        <span class="text-xs text-gray-500">Read</span>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@rails/ujs"
 import "channels"
-import "./notifications.js"
 // ✅ Import named exports directly from the module specifier
 // import { initializeApp } from "firebase/app"
 // import { getMessaging, getToken, onMessage } from "firebase/messaging"

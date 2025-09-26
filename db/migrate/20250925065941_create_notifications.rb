@@ -9,6 +9,6 @@ class CreateNotifications < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :notifications, [ :subject_id, :direct_object_id, :indirect_object_id ], unique: true
+    add_index :notifications, [ :subject_id, :direct_object_id, :indirect_object_id, :action ], unique: true
   end
 end

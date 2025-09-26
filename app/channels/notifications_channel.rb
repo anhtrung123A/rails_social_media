@@ -21,6 +21,5 @@ class NotificationsChannel < ApplicationCable::Channel
     direct_object = user.find_by(id: data["direct_object_id"])
     indirect_object = user.find_by(id: data["indirect_object_id"])
     action = data["action"]
-    puts direct_object.as_json
   end
 end

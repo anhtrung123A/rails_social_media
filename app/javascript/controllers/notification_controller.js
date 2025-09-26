@@ -61,9 +61,9 @@ export default class extends Controller {
     this.channel = ChannelManager.getInstance().subscribe(
       this.userIdValue,
       {
-        connected: () => console.log("🔔 Notifications connected"),
-        disconnected: () => console.log("🔕 Notifications disconnected"),
-        received: (data) => this.showNotification(data)
+        connected: () => console.log("Notifications connected"),
+        disconnected: () => console.log("Notifications disconnected"),
+        received: (data) => console.log("new message received")
       }
     )
   }

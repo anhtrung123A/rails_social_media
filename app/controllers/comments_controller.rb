@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, only: [ :create, :destroy ]
+  include CreateAndSendNotification
 
   def show
     @post = Post.eager_load(:comments).find(params[:post_id])
@@ -10,6 +11,7 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
+    create_and_send_notification_to(current_user, @post.author, @post, "comment")
     if @comment.save
       respond_to do |format|
         format.turbo_stream

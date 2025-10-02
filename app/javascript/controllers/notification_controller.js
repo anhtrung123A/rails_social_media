@@ -100,6 +100,13 @@ export default class extends Controller {
         },
         received: (data) => {
           console.log("New notification received:", data);
+            if (document.getElementById("unread_notifications_count") == null)
+            {
+                const counter = document.createElement("span")
+                counter.id = "unread_notifications_count"
+                counter.className = "absolute right-0 block h-[12px] w-[12px] font-bold rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 ring-2 ring-white bottom-[3rem] text-white text-[9px] flex justify-center items-center"
+                document.getElementById("unread_notification_notifications_container").appendChild(counter)
+            }
           this.handleNotification(data);
           // Call the endpoint to get updated unread count
           this.updateUnreadCount();

@@ -1,5 +1,4 @@
 class NotificationsChannel < ApplicationCable::Channel
-
   def subscribed
     puts params
     if params[:user_id]

@@ -1,7 +1,6 @@
 <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
-
       <!-- Logo -->
       <div class="flex-shrink-0">
         <%= link_to "/", class: "text-2xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:opacity-90 transition", data: { turbo: false } do %>
@@ -10,24 +9,24 @@
       </div>
 
       <!-- Search Bar (centered) -->
-      <div class="flex-1 max-w-xl mx-4 sm:mx-8">
+      <div class="flex-1 max-w-2xl mx-4 sm:mx-8">
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <%= form_with url: root_path, method: :get, local: true, class: "flex" do |form| %>
-            <%= form.text_field :q, placeholder: "Search...", 
-                                class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-500 text-sm",
-                                autocomplete: "off" %>
+          <%= form_with url: search_path, method: :get, data: { turbo: false }, class: "flex" do |form| %>
+            <%= form.text_field :q, placeholder: "Search...",
+                                class: "block w-full pl-10 pr-4 py-2 border-0 rounded-xl bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:border-indigo-500 placeholder-gray-500 text-sm transition-all duration-200 shadow-sm hover:shadow focus:shadow-md",
+                                autocomplete: "off",
+                                style: "transition: all 0.3s ease;" %>
           <% end %>
         </div>
       </div>
 
       <!-- Right Side: Auth Links or User Menu -->
       <div class="flex items-center space-x-2 sm:space-x-4">
-
         <% if user_signed_in? %>
           <!-- Conversations Link -->
           <div class="relative">

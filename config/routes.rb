@@ -12,11 +12,12 @@ Rails.application.routes.draw do
   resources :conversations, only: [ :index, :show, :create ] do
     resources :messages, only: [ :create ]
   end
-  resources :notifications, only: [:index, :show] do
+  resources :notifications, only: [ :index, :show ] do
     collection do
       post :mark_all_as_read
     end
   end
+  get "search", to: "search#index"
   devise_for :users
   root "home#index"
 end

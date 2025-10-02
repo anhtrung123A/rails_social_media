@@ -1,0 +1,104 @@
+<!-- app/views/search/index.html.erb -->
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-8 text-center">
+    <% if params[:q].present? %>
+      <p class="text-gray-600">Results for: <span class="font-semibold text-indigo-600">"<%= params[:q] %>"</span></p>
+    <% end %>
+  </div>
+  
+  <% if params[:q].present? %>
+    <!-- Users Section -->
+    <% if @users.any? %>
+      <div class="mb-10">
+        <div class="flex items-center mb-6">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 mr-3">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800">Users</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <% @users.each do |user| %>
+            <div class="bg-white rounded-xl border border-gray-200 hover:border-indigo-300 hover:shadow-lg transition-all duration-300 p-4 group">
+              <%= link_to profile_path(user), class: "flex items-center space-x-4",  data: { turbo: false } do %>
+                <div class="flex-shrink-0">
+                  <%= avatar_for(user, class: "h-14 w-14 rounded-full border-2 border-gray-200 group-hover:border-indigo-400 transition-colors duration-300") %>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-bold text-gray-900 truncate group-hover:text-indigo-600 transition-colors">
+                    <%= user.full_name || user.username %>
+                  </p>
+                  <p class="text-xs text-gray-500 truncate">@<%= user.username %></p>
+                </div>
+                <div class="flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-400 group-hover:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Posts Section -->
+    <% if @posts.any? %>
+      <div>
+        <div class="flex items-center mb-6">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 mr-3">
+            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800">Posts</h3>
+        </div>
+        
+        <div class="space-y-6">
+          <% @posts.each do |post| %>
+            <%= render partial: "posts/post", locals: { post: post } %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- No Results Message -->
+    <% if @users.empty? && @posts.empty? %>
+      <div class="text-center py-16">
+        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 inline-block">
+          <div class="text-indigo-400 mb-6">
+            <svg class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">No results found</h3>
+          <p class="text-gray-600 mb-6">We couldn't find anything matching your search</p>
+          <div class="inline-flex space-x-3">
+            <button onclick="history.back()" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md">
+              Go Back
+            </button>
+            <button onclick="document.querySelector('input[name=q]').focus()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Empty search query message -->
+    <div class="text-center py-16">
+      <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 inline-block">
+        <div class="text-indigo-400 mb-6">
+          <svg class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Start your search</h3>
+        <p class="text-gray-600 mb-6">Enter a search term above to find users and posts</p>
+        <p class="text-sm text-gray-500">Try searching for usernames, names, or post content</p>
+      </div>
+    </div>
+  <% end %>
+</div>

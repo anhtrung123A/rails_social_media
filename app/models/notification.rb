@@ -17,13 +17,13 @@ class Notification < ApplicationRecord
 
   def message
     case action
-    when 'like'
+    when "like"
       "#{subject.full_name || subject.username} liked your post"
-    when 'comment'
+    when "comment"
       "#{subject.full_name || subject.username} commented on your post"
-    when 'follow'
+    when "follow"
       "#{subject.full_name || subject.username} started following you"
-    when 'share'
+    when "share"
       "#{subject.full_name || subject.username} shared your post"
     else
       "#{subject.full_name || subject.username} #{action} on your post"
@@ -32,14 +32,14 @@ class Notification < ApplicationRecord
 
   def url
     case action
-    when 'liked', 'commented'
+    when "liked", "commented"
       post_path(indirect_object)
-    when 'followed'
+    when "followed"
       user_path(subject)
-    when 'mentioned'
+    when "mentioned"
       post_path(indirect_object)
     else
-      '#'
+      "#"
     end
   end
 end

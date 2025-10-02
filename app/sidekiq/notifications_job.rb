@@ -9,6 +9,5 @@ class NotificationsJob
     rescue
       puts "interacted"
     end
-    
   end
 end

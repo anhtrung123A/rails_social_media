@@ -16,10 +16,10 @@ class Message < ApplicationRecord
       created_at: created_at.strftime("%H:%M"),
       id: id
     })
-    ActionCable.server.broadcast("user_#{recipient.id}_messages",{ type: "new_message",
+    ActionCable.server.broadcast("user_#{recipient.id}_messages", { type: "new_message",
       conversation_id: conversation.id,
       sender_name: sender.full_name,
-      message_preview: message.content.truncate(50)})
+      message_preview: message.content.truncate(50) })
   end
 
   def mark_as_read!

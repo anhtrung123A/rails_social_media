@@ -1,104 +1,145 @@
-<div class="bg-white p-4 rounded shadow my-4">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200 my-4">
   <% raise "Post is nil!" if post.nil? %>
   
-  <div class="flex items-center space-x-3 mb-2">
-    <% if defined?(profile) %>
-      <% # Check if this is a shared post by seeing if profile is not the original author %>
-      <% is_shared = profile != post.author %>
-      
-      <% if is_shared %>
-        <!-- Show the user who shared the post -->
-        <%= link_to profile_path(profile), data: { turbo: false } do %>
-          <%= avatar_for(profile, class: "h-8 w-8 rounded-full") %>
+  <div class="flex items-start justify-between mb-3">
+    <div class="flex items-center space-x-3 flex-1">
+      <% if defined?(profile) %>
+        <% # Check if this is a shared post by seeing if profile is not the original author %>
+        <% is_shared = profile != post.author %>
+        
+        <% if is_shared %>
+          <!-- Show the user who shared the post -->
+          <%= link_to profile_path(profile), data: { turbo: false } do %>
+            <%= avatar_for(profile, class: "h-9 w-9 rounded-full ring-2 ring-white shadow-sm") %>
+          <% end %>
+          <div>
+            <p class="text-sm font-semibold text-gray-900">
+              <%= profile.full_name || profile.username %>
+              <span class="text-gray-500 text-xs font-normal">shared a post</span>
+            </p>
+            <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
+          </div>
+        <% else %>
+          <!-- Original author (not shared) -->
+          <%= link_to profile_path(post.author), data: { turbo: false } do %>
+            <%= avatar_for(post.author, class: "h-9 w-9 rounded-full ring-2 ring-white shadow-sm") %>
+          <% end %>
+          <div>
+            <p class="text-sm font-semibold text-gray-900"><%= post.author.full_name || post.author.username %></p>
+            <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
+          </div>
         <% end %>
-        <div>
-          <p class="text-sm font-semibold">
-            <%= profile.full_name || profile.username %>
-            <span class="text-gray-500 text-xs">shared a post</span>
-          </p>
-          <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
-        </div>
       <% else %>
-        <!-- Original author (not shared) -->
+        <!-- No profile passed, show original author -->
         <%= link_to profile_path(post.author), data: { turbo: false } do %>
-          <%= avatar_for(post.author, class: "h-8 w-8 rounded-full") %>
+          <%= avatar_for(post.author, class: "h-9 w-9 rounded-full ring-2 ring-white shadow-sm") %>
         <% end %>
         <div>
-          <p class="text-sm font-semibold"><%= post.author.full_name || post.author.username %></p>
+          <p class="text-sm font-semibold text-gray-900"><%= post.author.full_name || post.author.username %></p>
           <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
         </div>
       <% end %>
-    <% else %>
-      <!-- No profile passed, show original author -->
-      <%= link_to profile_path(post.author), data: { turbo: false } do %>
-        <%= avatar_for(post.author, class: "h-8 w-8 rounded-full") %>
-      <% end %>
-      <div>
-        <p class="text-sm font-semibold"><%= post.author.full_name || post.author.username %></p>
-        <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %> ago</p>
+    </div>
+
+    <!-- Ellipsis Button - Positioned at top right -->
+    <% if post.author == current_user %>
+      <div class="relative" data-controller="dropdown">
+        <button type="button"
+                class="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none transition-all duration-200 hover:scale-110"
+                data-action="click->dropdown#toggle click@window->dropdown#hide"
+                aria-label="Post options">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 13.75C12.9665 13.75 13.75 12.9665 13.75 12C13.75 11.0335 12.9665 10.25 12 10.25C11.0335 10.25 10.25 11.0335 10.25 12C10.25 12.9665 11.0335 13.75 12 13.75Z" />
+            <path d="M19 13.75C19.9665 13.75 20.75 12.9665 20.75 12C20.75 11.0335 19.9665 10.25 19 10.25C18.0335 10.25 17.25 11.0335 17.25 12C17.25 12.9665 18.0335 13.75 19 13.75Z" />
+            <path d="M5 13.75C5.9665 13.75 6.75 12.9665 6.75 12C6.75 11.0335 5.9665 10.25 5 10.25C4.0335 10.25 3.25 11.0335 3.25 12C3.25 12.9665 4.0335 13.75 5 13.75Z" />
+          </svg>
+        </button>
+
+        <!-- Improved Dropdown Menu -->
+        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-20 hidden border border-gray-200 ring-1 ring-black ring-opacity-5"
+             data-dropdown-target="menu"
+             role="menu"
+             aria-orientation="vertical">
+          <%= link_to "Edit",
+                      "#",
+                      class: "block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-150 rounded-lg mx-2 hover:font-medium",
+                      role: "menuitem" %>
+          <div class="border-t border-gray-100 my-1"></div>
+          <%= link_to "Delete",
+                      post_path(post), 
+                      method: :delete, 
+                      data:
+                      { 
+                        confirm: "Are you sure you want to delete this post?",
+                        turbo: false 
+                      },
+                      class: "block px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 rounded-lg mx-2 hover:font-medium",
+                      role: "menuitem",
+                      onclick: "setTimeout(() => location.reload(), 100); return false;" %>
+        </div>
       </div>
     <% end %>
   </div>
 
   <% # Show original author info and content for shared posts %>
   <% if defined?(profile) && profile != post.author %>
-    <div class="border-l-2 border-gray-200 pl-4 mt-3">
+    <div class="border-l-3 border-indigo-200 pl-4 mt-2">
       <!-- Original author header -->
-      <div class="flex items-center space-x-2 mb-2">
+      <div class="flex items-center space-x-2 mb-3">
         <%= link_to profile_path(post.author), data: { turbo: false } do %>
-          <%= avatar_for(post.author, class: "h-6 w-6 rounded-full") %>
+          <%= avatar_for(post.author, class: "h-7 w-7 rounded-full") %>
         <% end %>
         <div>
-          <p class="text-xs font-semibold text-gray-700"><%= post.author.full_name || post.author.username %></p>
+          <p class="text-sm font-semibold text-gray-800"><%= post.author.full_name || post.author.username %></p>
           <p class="text-xs text-gray-500">Original author</p>
         </div>
       </div>
       
       <!-- Original post content -->
-      <p class="mb-2"><%= post.description %></p>
+      <p class="mb-3 text-gray-700 leading-relaxed"><%= post.description %></p>
 
       <% if post.images.attached? %>
-        <div class="space-y-2 mt-2">
+        <div class="space-y-2 mt-3">
           <% post.images.each do |image| %>
-            <%= image_tag image.variant(resize_to_limit: [800, 800]), class: "w-full rounded-lg object-cover" %>
+            <%= image_tag image.variant(resize_to_limit: [800, 800]), class: "w-full rounded-xl object-cover shadow-sm" %>
           <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
     <!-- Non-shared post content -->
-    <p class="mb-2"><%= post.description %></p>
+    <p class="mb-3 text-gray-700 leading-relaxed"><%= post.description %></p>
 
     <% if post.images.attached? %>
-      <div class="space-y-2 mt-2">
+      <div class="space-y-2 mt-3">
         <% post.images.each do |image| %>
-          <%= image_tag image.variant(resize_to_limit: [800, 800]), class: "w-full rounded-lg object-cover" %>
+          <%= image_tag image.variant(resize_to_limit: [800, 800]), class: "w-full rounded-xl object-cover shadow-sm" %>
         <% end %>
       </div>
     <% end %>
   <% end %>
   
   <!-- Action Buttons -->
-  <div class="border-t border-gray-200 pt-3 mt-4 flex justify-around text-gray-600 text-sm font-medium">
+  <div class="border-t border-gray-100 pt-4 mt-4 flex justify-around text-gray-600 text-sm font-medium">
     <!-- Like -->
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors duration-150">
         <%= render partial: "posts/like_button", locals: { post: post } %>
-        <div id="<%= dom_id(post, :like_count) %>" class="text-sm text-gray-600">
+        <div id="<%= dom_id(post, :like_count) %>" class="text-sm text-gray-600 font-medium">
             <%= post.likes.count %>
         </div>
     </div>
     <!-- Comment -->
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors duration-150">
         <%= render partial: "posts/comment_button", locals: { post: post } %>
-        <div id="<%= dom_id(post, :comment_count) %>" class="text-sm text-gray-600">
+        <div id="<%= dom_id(post, :comment_count) %>" class="text-sm text-gray-600 font-medium">
             <%= post.comments.count %>
         </div>
     </div>
 
     <!-- Share -->
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors duration-150">
         <%= render partial: "posts/share_button", locals: { post: post } %>
-        <div id="<%= dom_id(post, :share_count) %>" class="text-sm text-gray-600">
+        <div id="<%= dom_id(post, :share_count) %>" class="text-sm text-gray-600 font-medium">
             <%= post.shares.count %>
         </div>
     </div>

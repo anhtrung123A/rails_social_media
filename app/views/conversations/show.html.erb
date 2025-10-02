@@ -4,57 +4,65 @@
      data-current-user-name="<%= current_user.full_name || current_user.username %>"
      data-current-user-avatar="<%= current_user.avatar.present? ? url_for(current_user.avatar) : "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" %>"
      >
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+  <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
     <!-- Conversation Header -->
-    <div class="p-4 border-b border-gray-200 flex items-center">
+    <div class="p-5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
       <% other_participant = @conversation.other_user(current_user) %>
-      <%= link_to profile_path(other_participant), class: "flex items-center space-x-3" do %>
-        <%= avatar_for(other_participant, class: "h-10 w-10 rounded-full") %>
+      <%= link_to profile_path(other_participant), class: "flex items-center space-x-4 group" do %>
+        <div class="relative">
+          <%= avatar_for(other_participant, class: "h-12 w-12 rounded-full ring-2 ring-white shadow-lg") %>
+          <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+        </div>
         <div>
-          <h3 class="font-semibold text-gray-900"><%= other_participant.full_name || other_participant.username %></h3>
-          <p class="text-sm text-gray-500">Online</p>
+          <h3 class="font-bold text-lg"><%= other_participant.full_name || other_participant.username %></h3>
+          <p class="text-indigo-100 text-sm flex items-center">
+            <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+            Online
+          </p>
         </div>
       <% end %>
     </div>
 
     <!-- Messages Container -->
-    <div data-conversation-target="messagesContainer" class="p-4 h-96 overflow-y-auto">
+    <div data-conversation-target="messagesContainer" class="p-4 h-96 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
       <% if @messages.any? %>
         <% @messages.each do |message| %>
-          <div class="mb-4 <%= message.sender == current_user ? 'text-right' : 'text-left' %>" 
+          <div class="mb-6 <%= message.sender == current_user ? 'text-right' : 'text-left' %>" 
                id="message_<%= message.id %>">
             <div class="flex <%= message.sender == current_user ? 'justify-end' : 'justify-start' %>">
               <% unless message.sender == current_user %>
-                <%= avatar_for(message.sender, class: "h-6 w-6 rounded-full mt-1 mr-2") %>
+                <%= avatar_for(message.sender, class: "h-8 w-8 rounded-full mt-1 mr-3 shadow-sm") %>
               <% end %>
               
-              <div class="<%= message.sender == current_user ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-900' %> 
-                         rounded-2xl px-4 py-2 max-w-xs lg:max-w-md inline-block">
-                <p class="text-sm"><%= message.content %></p>
-                <p class="text-xs opacity-70 mt-1 <%= message.sender == current_user ? 'text-right text-white' : 'text-gray-500' %>">
+              <div class="<%= message.sender == current_user ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' : 'bg-white text-gray-900 shadow-sm border border-gray-100' %> 
+                         rounded-3xl px-5 py-3 max-w-xs lg:max-w-md inline-block transform transition-transform hover:scale-[1.02]">
+                <p class="text-sm leading-relaxed"><%= message.content %></p>
+                <p class="text-xs opacity-80 mt-2 <%= message.sender == current_user ? 'text-right text-indigo-100' : 'text-gray-500' %>">
                   <%= message.created_at.strftime("%H:%M") %>
                 </p>
               </div>
               
               <% if message.sender == current_user %>
-                <%= avatar_for(message.sender, class: "h-6 w-6 rounded-full mt-1 ml-2") %>
+                <%= avatar_for(message.sender, class: "h-8 w-8 rounded-full mt-1 ml-3 shadow-sm") %>
               <% end %>
             </div>
           </div>
         <% end %>
       <% else %>
         <div class="flex flex-col items-center justify-center h-full text-center text-gray-500">
-          <svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          <p class="font-medium">No messages yet</p>
-          <p class="text-sm">Start the conversation by sending a message</p>
+          <div class="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full p-4 mb-4">
+            <svg class="w-14 h-14 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-700 text-lg mb-2">No messages yet</h3>
+          <p class="text-gray-500 text-sm">Start the conversation by sending a message</p>
         </div>
       <% end %>
     </div>
 
     <!-- Message Form -->
-    <div class="p-4 border-t border-gray-200">
+    <div class="p-5 bg-white border-t border-gray-200 shadow-inner">
       <%= form_with model: @message, 
                     url: conversation_messages_path(@conversation), 
                     method: :post,
@@ -66,10 +74,10 @@
         <%= f.text_field :content, 
                          placeholder: "Type a message...", 
                          data: { conversation_target: "messageInput" },
-                         class: "flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
+                         class: "flex-1 border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-200" %>
         <%= f.submit "Send", 
                      data: { conversation_target: "sendButton" },
-                     class: "bg-indigo-500 text-white rounded-full px-4 py-2 hover:bg-indigo-600 transition" %>
+                     class: "bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl px-6 py-3 hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-medium" %>
       <% end %>
     </div>
   </div>

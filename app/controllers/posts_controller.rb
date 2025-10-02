@@ -14,6 +14,15 @@ class PostsController < ApplicationController
     @posts = Post.includes(:author, images_attachments: :blob).order(created_at: :desc).page(params[:page]).per(5)
   end
 
+  def destroy
+    @post = Post.find(params[:id])
+    if @post.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
+  end
+
   private
 
   def post_params

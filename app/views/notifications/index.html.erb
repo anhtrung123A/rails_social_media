@@ -1,29 +1,41 @@
 <!-- app/views/notifications/index.html.erb -->
 <div class="max-w-2xl mx-auto mt-6 px-4 sm:px-6 lg:px-8">
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+  <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
     <!-- Notifications Header -->
-    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-      <h3 class="font-semibold text-gray-900">Notifications</h3>
-       <%= button_to "Mark all as read", 
-                      mark_all_as_read_notifications_path, 
-                      method: :post,
-                      class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium",
-                      form: { data: { turbo_method: :post } } %>
+    <div class="p-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <svg class="w-7 h-7 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <h3 class="font-bold text-xl">Notifications</h3>
+        </div>
+        <% if @notifications.any? %>
+          <%= button_to "Mark all as read", 
+                         mark_all_as_read_notifications_path, 
+                         method: :post,
+                         class: "text-sm bg-white text-indigo-600 hover:text-indigo-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm",
+                         form: { data: { turbo_method: :post } } %>
+        <% end %>
+      </div>
     </div>
 
     <!-- Notifications Container -->
-    <div class="p-4 h-96 overflow-y-auto" data-notifications-target="notificationsContainer">
+    <div class="p-5 h-96 overflow-y-auto bg-gradient-to-b from-gray-50 to-white" data-notifications-target="notificationsContainer">
       <% if @notifications.any? %>
-        <div class="space-y-3">
+        <div class="space-y-4">
           <%= render @notifications %>
         </div>
       <% else %>
         <div class="flex flex-col items-center justify-center h-full text-center text-gray-500">
-          <svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <p class="font-medium">No notifications</p>
-          <p class="text-sm">You don't have any notifications yet</p>
+          <div class="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full p-5 mb-5">
+            <svg class="w-16 h-16 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-700 text-lg mb-2">No notifications</h3>
+          <p class="text-gray-500 text-sm">You don't have any notifications yet</p>
+          <p class="text-xs text-gray-400 mt-2">New notifications will appear here</p>
         </div>
       <% end %>
     </div>

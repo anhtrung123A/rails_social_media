@@ -11,7 +11,7 @@ class MessagesChannel < ApplicationCable::Channel
         reject
       end
     else
-      stream_from "user_#{current_user.id}_messages"
+      reject
     end
   end
 

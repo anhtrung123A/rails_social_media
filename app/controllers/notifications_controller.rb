@@ -11,4 +11,12 @@ class NotificationsController < ApplicationController
     @notifications.update_all(read: true)
     redirect_to notifications_path
   end
+  
+  def get_number_of_unread_notifications
+    render json: { number_of_unread_notifications: current_user.unread_notifications.count }, status: :ok
+  end
+
+  def get_number_of_unread_messages
+    render json: { number_of_unread_messages: Message.latest_per_conversation.where(recipient_id: current_user.id).count }
+  end
 end

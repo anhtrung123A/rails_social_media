@@ -111,7 +111,6 @@ export default class extends Controller {
       this.channel.unsubscribe();
     }
   }
-
   // Handle message form submission
   sendMessage(event) {
     event.preventDefault()

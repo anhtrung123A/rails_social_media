@@ -76,3 +76,39 @@
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.facebook-notification {
+  animation: slideInRight 0.3s ease-out;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.facebook-notification:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .facebook-notification {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+  }
+  
+  #facebook-notifications-container {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+  }
+}

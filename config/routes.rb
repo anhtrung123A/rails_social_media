@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   resources :notifications, only: [ :index, :show ] do
     collection do
       post :mark_all_as_read
+      get :get_number_of_unread_notifications
+      get :get_number_of_unread_messages
     end
   end
   get "search", to: "search#index"

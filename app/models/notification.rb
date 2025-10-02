@@ -2,10 +2,13 @@ class Notification < ApplicationRecord
   belongs_to :subject, class_name: "User"
   belongs_to :direct_object, class_name: "User"
   belongs_to :indirect_object, class_name: "Post"
+  after_create_commit { broadcast_via_action_cable }
   validates :action, presence: true
 
   def broadcast_via_action_cable
+    puts 1111111
     ActionCable.server.broadcast("notifications_#{direct_object_id}", {
+      message: message,
       subject: subject,
       direct_object: direct_object,
       indirect_object: indirect_object,

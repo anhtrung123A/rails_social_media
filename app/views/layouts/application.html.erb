@@ -28,6 +28,10 @@
       <div data-controller="notification"
           data-notification-user-id-value="<%= current_user.id %>">
       </div>
+      <div 
+        data-controller="user-notifications"
+        data-user-notifications-user-id-value="<%= current_user.id %>">
+        </div>
     <% end %>
     <% unless devise_controller? %>
       <%= render "shared/navbar" %>

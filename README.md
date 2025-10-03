@@ -78,7 +78,7 @@ A modern, full-stack social media platform built with Ruby on Rails, featuring r
 6. **Start the Rails server**
    ```bash
     rails server
-7. **Visit the app**
+7. **Visit the app**\
 Open your browser to http://localhost:3000
 ## 📁 Project Structure Highlights
 

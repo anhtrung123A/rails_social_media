@@ -3,8 +3,9 @@
   <!-- Profile Header -->
   <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-8 pb-6 border-b border-gray-100">
     <!-- Avatar -->
-    <div class="flex-shrink-0">
+    <div class="flex-shrink-0 relative">
       <%= avatar_for(@user, class: "h-28 w-28 sm:h-32 sm:w-32 rounded-full object-cover border-4 border-white shadow-sm") %>
+      <%= render "shared/activity_status", user: @user %>
     </div>
 
     <!-- User Info -->

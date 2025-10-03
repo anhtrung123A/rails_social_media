@@ -1,0 +1,24 @@
+<!-- app/views/shared/_activity_status.html.erb -->
+<%
+  dom_id = local_assigns[:dom_id] || "activity_status_#{user.id}"
+  is_online = RedisService.user_online?(user.id)
+  last_seen = RedisService.user_last_seen(user.id)
+%>
+
+<div 
+  id="<%= dom_id %>" 
+  class="flex items-center ml-2"
+  data-user-id="<%= user.id %>"
+>
+  <% if is_online %>
+    <span class="h-2 w-2 bg-green-500 rounded-full"></span>
+  <% else %>
+    <span class="text-[8px] font-bold text-green-500 px-[3px] py-[2px] rounded-full whitespace-nowrap bg-gray-100">
+      <% if last_seen %>
+        <%= time_ago_in_words(last_seen) %>
+      <% else %>
+        Recently
+      <% end %>
+    </span>
+  <% end %>
+</div>

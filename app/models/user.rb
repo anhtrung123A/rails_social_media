@@ -37,5 +37,4 @@ class User < ApplicationRecord
   def read_all_notifications
     notifications.order(created_at: :desc).first.read
   end
-
 end

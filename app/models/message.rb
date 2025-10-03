@@ -5,11 +5,11 @@ class Message < ApplicationRecord
   belongs_to :conversation
   scope :latest_per_conversation, -> {
     joins(
-      "INNER JOIN (SELECT sender_id, recipient_id, MAX(created_at) as max_created_at 
-                   FROM messages 
-                   GROUP BY sender_id, recipient_id) latest 
-                   ON messages.sender_id = latest.sender_id 
-                   AND messages.recipient_id = latest.recipient_id 
+      "INNER JOIN (SELECT sender_id, recipient_id, MAX(created_at) as max_created_at
+                   FROM messages
+                   GROUP BY sender_id, recipient_id) latest
+                   ON messages.sender_id = latest.sender_id
+                   AND messages.recipient_id = latest.recipient_id
                    AND messages.created_at = latest.max_created_at"
     )
   }
@@ -28,7 +28,7 @@ class Message < ApplicationRecord
     ActionCable.server.broadcast("user_#{recipient.id}_messages", { type: "new_message",
       conversation_id: conversation.id,
       sender_name: sender.full_name,
-      message_preview: content.truncate(50) 
+      message_preview: content.truncate(50)
     })
   end
 

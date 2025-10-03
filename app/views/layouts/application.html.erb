@@ -31,7 +31,15 @@
       <div 
         data-controller="user-notifications"
         data-user-notifications-user-id-value="<%= current_user.id %>">
-        </div>
+      </div>
+      <div 
+        data-controller="activity-status"
+        data-activity-status-user-id-value="<%= current_user.id %>">
+      </div>
+      <div 
+        data-controller="presence"
+        data-presence-user-id-value="<%= current_user.id %>">
+      </div>
     <% end %>
     <% unless devise_controller? %>
       <%= render "shared/navbar" %>

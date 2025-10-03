@@ -31,7 +31,7 @@
         <% end %>
       <% else %>
         <!-- No profile passed, show original author -->
-        <%= link_to profile_path(post.author), data: { turbo: false } do %>
+        <%= link_to profile_path(post.author), class: "relative", data: { turbo: false } do %>
           <%= avatar_for(post.author, class: "h-9 w-9 rounded-full ring-2 ring-white shadow-sm") %>
         <% end %>
         <div>
